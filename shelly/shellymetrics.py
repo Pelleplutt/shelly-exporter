@@ -23,7 +23,7 @@ class CounterMetric(Metric):
         super().__init__(metric, description, labels)
 
     def get_prometheus_metric(self):
-        return CounterMetricFamily(self.metric, self.description, labels=self.labels)
+        return CounterMetricFamily(f'shelly_{self.metric}', self.description, labels=self.labels)
 
 
 class Gaugemetric(Metric):
@@ -31,7 +31,7 @@ class Gaugemetric(Metric):
         super().__init__(metric, description, labels)
 
     def get_prometheus_metric(self):
-        return GaugeMetricFamily(self.metric, self.description, labels=self.labels)
+        return GaugeMetricFamily(f'shelly_{self.metric}', self.description, labels=self.labels)
 
 class ShellyMetric(object):
     def __init__(self, shelly, labelvalues):
