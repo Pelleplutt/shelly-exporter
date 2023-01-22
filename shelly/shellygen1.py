@@ -119,7 +119,7 @@ class ShellyGen1(object):
         status = self.apiget_status()
         metrics = []
         metrics.extend([
-            shellymetrics.ShellyMetricSysstat(self, 
+            shellymetrics.ShellyMetricSysstat(self,
                 uptime=status.get('uptime'),
                 ram_size=status.get('ram_total'),
                 ram_free=status.get('ram_free'),
@@ -134,7 +134,7 @@ class ShellyGen1(object):
 
         for relay_id in range(len(status['relays'])):
             labels = {'id': str(relay_id)}
-            metrics.append( 
+            metrics.append(
                 shellymetrics.ShellyMetricPowerMeter(self, labelvalues=labels,
                     output=status['relays'][relay_id]['ison'],
                     apower=status['meters'][relay_id]['power'],

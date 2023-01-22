@@ -43,7 +43,7 @@ class ShellyGen2(object):
 
         supportedmethods = self.apiget_shelly_listmethods()
         self.set_supportedmethods(supportedmethods)
-    
+
     def set_supportedmethods(self, supportedmethods):
         for m in supportedmethods['methods']:
             self.supportedmethods[m] = True
@@ -61,7 +61,7 @@ class ShellyGen2(object):
 
     # {
     # 	"methods": ["Switch.SetConfig", "Switch.GetConfig", ...]
-    # } 
+    # }
     def apiget_shelly_listmethods(self):
         return self.apicall('Shelly', 'ListMethods')
 
@@ -69,7 +69,7 @@ class ShellyGen2(object):
         status = self.apiget_shelly_getstatus()
         metrics = []
         metrics.extend([
-            shellymetrics.ShellyMetricSysstat(self, 
+            shellymetrics.ShellyMetricSysstat(self,
                 uptime=status['sys'].get('uptime'),
                 ram_size=status['sys'].get('ram_size'),
                 ram_free=status['sys'].get('ram_free'),
@@ -80,7 +80,7 @@ class ShellyGen2(object):
                 rssi=status['wifi'].get('rssi'))
         ])
 
-        # There seems to be no device temperature, we will calculate an average given inputs 
+        # There seems to be no device temperature, we will calculate an average given inputs
         # for this and also expose per switch
         avg_temperature = None
         for key, val in status.items():

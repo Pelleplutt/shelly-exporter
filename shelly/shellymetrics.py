@@ -62,17 +62,17 @@ class ShellyMetric(object):
 
 class ShellyMetricSysstat(ShellyMetric):
     metrics = {
-        'restart_required': Gaugemetric('restart_required', 'Restart is required', 
+        'restart_required': Gaugemetric('restart_required', 'Restart is required',
                 ['mac', 'model']),
-        'uptime': CounterMetric('uptime_seconds', 'Seconds since last restart', 
+        'uptime': CounterMetric('uptime_seconds', 'Seconds since last restart',
                 ['mac', 'model']),
-        'ram_size': Gaugemetric('ram_size_kb', 'Size of internal ram', 
+        'ram_size': Gaugemetric('ram_size_kb', 'Size of internal ram',
                 ['mac', 'model']),
-        'ram_free': Gaugemetric('ram_free_kb', 'Unused amount of internal ram', 
+        'ram_free': Gaugemetric('ram_free_kb', 'Unused amount of internal ram',
                 ['mac', 'model']),
-        'fs_size': Gaugemetric('fs_size_kb', 'Size of internal filesystem', 
+        'fs_size': Gaugemetric('fs_size_kb', 'Size of internal filesystem',
                 ['mac', 'model']),
-        'fs_free': Gaugemetric('fs_free_kb', 'Unused amount of internal filesystem', 
+        'fs_free': Gaugemetric('fs_free_kb', 'Unused amount of internal filesystem',
                 ['mac', 'model']),
     }
 
@@ -89,9 +89,9 @@ class ShellyMetricSysstat(ShellyMetric):
 
 class ShellyMetricWifi(ShellyMetric):
     metrics = {
-        'connected': Gaugemetric('wifi_connected', 'WiFi is connected', 
+        'connected': Gaugemetric('wifi_connected', 'WiFi is connected',
                 ['mac', 'model']),
-        'rssi': Gaugemetric('rssi_db', 'WiFi signal strength', 
+        'rssi': Gaugemetric('rssi_db', 'WiFi signal strength',
                 ['mac', 'model']),
     }
 
@@ -104,7 +104,7 @@ class ShellyMetricWifi(ShellyMetric):
 
 class ShellyMetricDeviceTemperature(ShellyMetric):
     metrics = {
-        'temperature': Gaugemetric('device_temperature_centigrade', 'Gevice general temperature in centigrade', 
+        'temperature': Gaugemetric('device_temperature_centigrade', 'Gevice general temperature in centigrade',
                 ['mac', 'model']),
     }
 
@@ -117,19 +117,19 @@ class ShellyMetricDeviceTemperature(ShellyMetric):
 
 class ShellyMetricPowerMeter(ShellyMetric):
     metrics = {
-        'output': Gaugemetric('switch_output_enabled', 'Switch is currently providing power', 
+        'output': Gaugemetric('switch_output_enabled', 'Switch is currently providing power',
                 ['mac', 'model', 'id']),
-        'apower': Gaugemetric('switch_power_watts', 'Currently switched power', 
+        'apower': Gaugemetric('switch_power_watts', 'Currently switched power',
                 ['mac', 'model', 'id']),
-        'voltage': Gaugemetric('switch_voltage_volt', 'Current voltage on switch input', 
+        'voltage': Gaugemetric('switch_voltage_volt', 'Current voltage on switch input',
                 ['mac', 'model', 'id']),
-        'current': Gaugemetric('switch_current_ampere', 'Currently switched current', 
+        'current': Gaugemetric('switch_current_ampere', 'Currently switched current',
                 ['mac', 'model', 'id']),
-        'energy_total': Gaugemetric('switch_energy_total_kwh', 'Total energy switched', 
+        'energy_total': Gaugemetric('switch_energy_total_kwh', 'Total energy switched',
                 ['mac', 'model', 'id']),
         'power_factor': Gaugemetric('switch_power_factor', 'Current power factor',
                 ['mac', 'model', 'id']),
-        'temperature': Gaugemetric('switch_temperature_centigrade', 'Switch temperature in centigrade', 
+        'temperature': Gaugemetric('switch_temperature_centigrade', 'Switch temperature in centigrade',
                 ['mac', 'model', 'id']),
     }
 
