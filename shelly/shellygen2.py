@@ -25,7 +25,7 @@ class ShellyGen2(object):
         self.reinit(deviceinfo)
 
     def __str__(self) -> str:
-        return f'{self.ip} is a {self.model} running on {self.fw}'
+        return f'{self.ip} (mac {self.mac}) is a {self.model} running on {self.fw}'
 
     def reinit(self, deviceinfo=None):
         self.supportedmethods = {}

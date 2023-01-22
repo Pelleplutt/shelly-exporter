@@ -22,7 +22,7 @@ class ShellyGen1(object):
         self.reinit(shellyjson)
 
     def __str__(self) -> str:
-        return f'{self.ip} is a {self.model} running on {self.fw} with {self.num_meters} meters and {self.num_outputs} outputs'
+        return f'{self.ip} (mac {self.mac}) is a {self.model} running on {self.fw} with {self.num_meters} meters and {self.num_outputs} outputs'
 
     def reinit(self, shellyjson=None):
         if shellyjson is None:
