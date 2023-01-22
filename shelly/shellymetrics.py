@@ -42,7 +42,7 @@ class ShellyMetric(object):
     def setup_metrics(cls, metrics):
         for name, metric in cls.metrics.items():
             logging.debug(f'Adding metric {name} of type {metric.__class__.__name__} for {cls.__name__}')
-            metrics[name] = metric.get_prometheus_metric()
+            metrics[metric.metric] = metric.get_prometheus_metric()
 
     def get_labels(self):
         if self.labelvalues is not None:
@@ -58,7 +58,7 @@ class ShellyMetric(object):
         for key, val in self.data.items():
             all_labels = self.get_labels()
             if val is not None:
-                metrics[key].add_metric(self.metrics[key].get_labels_for_prometheus_metric(all_labels), float(val))
+                metrics[self.metrics[key].metric].add_metric(self.metrics[key].get_labels_for_prometheus_metric(all_labels), float(val))
 
 class ShellyMetricSysstat(ShellyMetric):
     metrics = {
@@ -127,9 +127,13 @@ class ShellyMetricPowerMeter(ShellyMetric):
                 ['mac', 'model', 'id']),
         'energy_total': Gaugemetric('switch_energy_total_kwh', 'Total energy switched', 
                 ['mac', 'model', 'id']),
+        'power_factor': Gaugemetric('switch_power_factor', 'Current power factor',
+                ['mac', 'model', 'id']),
+        'temperature': Gaugemetric('switch_temperature_centigrade', 'Switch temperature in centigrade', 
+                ['mac', 'model', 'id']),
     }
 
-    def __init__(self, shelly, labelvalues=None, output=None, apower=None, voltage=None, current=None, energy_total=None):
+    def __init__(self, shelly, labelvalues=None, output=None, apower=None, voltage=None, current=None, energy_total=None, power_factor=None, temperature=None):
         super().__init__(shelly, labelvalues)
         self.data = {
             'output': output,
@@ -137,4 +141,6 @@ class ShellyMetricPowerMeter(ShellyMetric):
             'voltage': voltage,
             'current': current,
             'energy_total': energy_total,
+            'power_factor': power_factor,
+            'temperature': temperature,
         }

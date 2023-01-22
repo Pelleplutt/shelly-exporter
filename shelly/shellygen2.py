@@ -80,18 +80,31 @@ class ShellyGen2(object):
                 rssi=status['wifi'].get('rssi'))
         ])
 
+        # There seems to be no device temperature, we will calculate an average given inputs 
+        # for this and also expose per switch
+        avg_temperature = None
         for key, val in status.items():
             if key[:7] == 'switch:':
                 labels = {'id': str(val['id'])}
-                metrics.append( 
+                metrics.append(
                     shellymetrics.ShellyMetricPowerMeter(self, labelvalues=labels,
                         output=val['output'],
                         apower=val['apower'],
                         voltage=val['voltage'],
                         current=val['current'],
                         energy_total=float(val['aenergy']['total']) / 1000 / 60, # Supplied in Watt Minutes?
+                        power_factor=val.get('pf'),
+                        temperature=val['temperature']['tC'],
                     )
                 )
+                if avg_temperature is None:
+                    avg_temperature = val['temperature']['tC']
+                else:
+                    avg_temperature = (avg_temperature + val['temperature']['tC']) / 2
+
+        if avg_temperature is not None:
+            metrics.append(
+                shellymetrics.ShellyMetricDeviceTemperature(self, temperature=avg_temperature))
 
         return metrics
 
