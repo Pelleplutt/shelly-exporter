@@ -1,3 +1,4 @@
+import logging
 import requests
 import pprint
 from . import shellymetrics
@@ -11,6 +12,10 @@ def shellygen2factory(ip):
         if json.get('app') is not None:
             if json['app'] == 'Pro1PM':
                 return ShellyPro1PM(ip=ip, deviceinfo=json)
+            elif json['app'] == 'Plus1PM':
+                return ShellyPlus1PM(ip=ip, deviceinfo=json)
+            else:
+                logging.info(f"There seems to be a shelly of type {json['app']} at {ip}, but cannot handle")
 
     return None
 
@@ -93,4 +98,8 @@ class ShellyGen2(object):
 
 class ShellyPro1PM(ShellyGen2):
     model = 'Shelly Pro 1PM'
+    pass
+
+class ShellyPlus1PM(ShellyGen2):
+    model = 'Shelly Plus 1PM'
     pass

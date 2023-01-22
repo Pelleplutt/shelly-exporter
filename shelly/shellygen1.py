@@ -1,3 +1,4 @@
+import logging
 import requests
 from . import shellymetrics
 
@@ -10,6 +11,8 @@ def shellygen1factory(ip):
         if json.get('type') is not None:
             if json['type'] == 'SHPLG-S':
                 return ShellyPlugS(ip, shellyjson=json)
+            else:
+                logging.info(f"There seems to be a shelly of type {json['type']} at {ip}, but cannot handle")
 
     return None
 
