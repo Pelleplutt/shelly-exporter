@@ -2,8 +2,11 @@
 
 import argparse
 import logging
+import os
 import pprint
+import re
 import time
+
 from shelly import shellyfactory
 from shelly.shellymetrics import *
 from prometheus_client import start_http_server
@@ -11,18 +14,18 @@ from prometheus_client.core import REGISTRY
 
 PORT = 9111
 
-shellies_ip_list = [
-    '192.168.30.212',
-    '192.168.30.142'
-]
 
 class ShellyCollector(object):
-    def __init__(self):
+    def __init__(self, shelly_list):
 
         self.shellies = {}
-        for ip in shellies_ip_list:
-            self.shellies[ip] = shellyfactory.factory(ip)
-            logging.info(f'Shelly at {ip} is {self.shellies[ip]}')
+        for ip in shelly_list:
+            shelly = shellyfactory.factory(ip)
+            if shelly is not None:
+                self.shellies[ip] = shellyfactory.factory(ip)
+                logging.info(f'Shelly at {ip} is {self.shellies[ip]}')
+            else:
+                logging.warning(f'Input {ip} cannot be resolved to a usable shelly, ignoring')
 
     def collect(self):
         logging.info('Collect')
@@ -57,7 +60,16 @@ if __name__ == '__main__':
         datefmt='%Y-%m-%d %H:%M:%S')
 
 
-    REGISTRY.register(ShellyCollector())
+    if os.environ.get('SHELLY_LIST') is None:
+        raise AssertionError('Missing SHELLY_LIST environment variable with list of shelly devices')
+
+    shelly_list = []
+    for ip in re.split(' |,|;', os.environ['SHELLY_LIST']):
+        if not len(ip):
+            next
+        shelly_list.append(ip)
+
+    REGISTRY.register(ShellyCollector(shelly_list))
     start_http_server(args.port)
     logging.info(f'HTTP server started on {args.port}')
 
