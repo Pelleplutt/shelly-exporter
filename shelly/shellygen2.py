@@ -89,7 +89,7 @@ class ShellyGen2(object):
                         apower=val['apower'],
                         voltage=val['voltage'],
                         current=val['current'],
-                        energy_total=val['aenergy']['total'],
+                        energy_total=float(val['aenergy']['total']) / 1000 / 60, # Supplied in Watt Minutes?
                     )
                 )
 
