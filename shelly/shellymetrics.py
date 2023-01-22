@@ -2,6 +2,13 @@ import logging
 
 from prometheus_client.core import GaugeMetricFamily, CounterMetricFamily, REGISTRY
 
+
+def setup_metrics(metrics):
+    ShellyMetricSysstat.setup_metrics(metrics)
+    ShellyMetricWifi.setup_metrics(metrics)
+    ShellyMetricDeviceTemperature.setup_metrics(metrics)
+    ShellyMetricPowerMeter.setup_metrics(metrics)
+
 class Metric(object):
     def __init__(self, metric, description, labels):
         self.metric = metric
@@ -69,8 +76,8 @@ class ShellyMetricSysstat(ShellyMetric):
                 ['mac', 'model']),
     }
 
-    def __init__(self, shelly, labelsvalues=None, restart_required=None, uptime=None, ram_size=None, ram_free=None, fs_size=None, fs_free=None):
-        super().__init__(shelly, labelsvalues)
+    def __init__(self, shelly, labelvalues=None, restart_required=None, uptime=None, ram_size=None, ram_free=None, fs_size=None, fs_free=None):
+        super().__init__(shelly, labelvalues)
         self.data = {
             'restart_required': restart_required,
             'uptime': uptime,
@@ -88,9 +95,46 @@ class ShellyMetricWifi(ShellyMetric):
                 ['mac', 'model']),
     }
 
-    def __init__(self, shelly, labelsvalues=None, connected=None, rssi=None):
-        super().__init__(shelly, labelsvalues)
+    def __init__(self, shelly, labelvalues=None, connected=None, rssi=None):
+        super().__init__(shelly, labelvalues)
         self.data = {
             'connected': connected,
             'rssi': rssi,
+        }
+
+class ShellyMetricDeviceTemperature(ShellyMetric):
+    metrics = {
+        'temperature': Gaugemetric('device_temperature_centigrade', 'Gevice general temperature in centigrade', 
+                ['mac', 'model']),
+    }
+
+    def __init__(self, shelly, labelvalues=None, temperature=None):
+        super().__init__(shelly, labelvalues)
+        self.data = {
+            'temperature': temperature,
+        }
+
+
+class ShellyMetricPowerMeter(ShellyMetric):
+    metrics = {
+        'output': Gaugemetric('switch_output_enabled', 'Switch is currently providing power', 
+                ['mac', 'model', 'id']),
+        'apower': Gaugemetric('switch_power_watts', 'Currently switched power', 
+                ['mac', 'model', 'id']),
+        'voltage': Gaugemetric('switch_voltage_volt', 'Current voltage on switch input', 
+                ['mac', 'model', 'id']),
+        'current': Gaugemetric('switch_current_ampere', 'Currently switched current', 
+                ['mac', 'model', 'id']),
+        'energy_total': Gaugemetric('switch_energy_total_kwh', 'Total energy switched', 
+                ['mac', 'model', 'id']),
+    }
+
+    def __init__(self, shelly, labelvalues=None, output=None, apower=None, voltage=None, current=None, energy_total=None):
+        super().__init__(shelly, labelvalues)
+        self.data = {
+            'output': output,
+            'apower': apower,
+            'voltage': voltage,
+            'current': current,
+            'energy_total': energy_total,
         }

@@ -9,7 +9,7 @@ def shellygen1factory(ip):
 
         if json.get('type') is not None:
             if json['type'] == 'SHPLG-S':
-                return ShellyPlugS(ip=ip, shellyjson=json)
+                return ShellyPlugS(ip, shellyjson=json)
 
     return None
 
@@ -124,8 +124,20 @@ class ShellyGen1(object):
                 fs_free=status.get('fs_free')),
             shellymetrics.ShellyMetricWifi(self,
                 connected=status['wifi_sta'].get('connected'),
-                rssi=status['wifi_sta'].get('rssi'))
+                rssi=status['wifi_sta'].get('rssi')),
+            shellymetrics.ShellyMetricDeviceTemperature(self,
+                temperature=status['tmp'].get('tC'))
         ])
+
+        for relay_id in range(len(status['relays'])):
+            labels = {'id': str(relay_id)}
+            metrics.append( 
+                shellymetrics.ShellyMetricPowerMeter(self, labelvalues=labels,
+                    output=status['relays'][relay_id]['ison'],
+                    apower=status['meters'][relay_id]['power'],
+                    energy_total=float(status['meters'][relay_id]['total']) / 1000 / 60, # values supplied in watt minutes
+                )
+            )
 
         return metrics
 

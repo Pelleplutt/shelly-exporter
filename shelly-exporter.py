@@ -18,9 +18,6 @@ shellies_ip_list = [
 
 class ShellyCollector(object):
     def __init__(self):
-        self.metrics = {}
-        ShellyMetricSysstat.setup_metrics(self.metrics)
-        ShellyMetricWifi.setup_metrics(self.metrics)
 
         self.shellies = {}
         for ip in shellies_ip_list:
@@ -29,6 +26,9 @@ class ShellyCollector(object):
 
     def collect(self):
         logging.info('Collect')
+
+        self.metrics = {}
+        setup_metrics(self.metrics)
 
         for ip, shelly in self.shellies.items():
             shelly_metrics = shelly.get_metrics()

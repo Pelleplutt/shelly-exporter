@@ -75,8 +75,20 @@ class ShellyGen2(object):
                 rssi=status['wifi'].get('rssi'))
         ])
 
-        return metrics
+        for key, val in status.items():
+            if key[:7] == 'switch:':
+                labels = {'id': str(val['id'])}
+                metrics.append( 
+                    shellymetrics.ShellyMetricPowerMeter(self, labelvalues=labels,
+                        output=val['output'],
+                        apower=val['apower'],
+                        voltage=val['voltage'],
+                        current=val['current'],
+                        energy_total=val['aenergy']['total'],
+                    )
+                )
 
+        return metrics
 
 
 class ShellyPro1PM(ShellyGen2):
