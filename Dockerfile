@@ -11,4 +11,6 @@ COPY shelly/* /app/shelly/
 
 EXPOSE 9109
 
+USER prometheus
+
 CMD ["/usr/local/bin/python",  "/app/shelly-exporter.py"]
